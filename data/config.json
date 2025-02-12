@@ -1,4 +1,4 @@
 {
-    "pricesFilePath": "prices.json"
+    "pricesFilePath": "https://raw.githubusercontent.com/MashaBorodkina/Service-Fee-Calculator/main/data/prices.json"
     
 }
