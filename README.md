@@ -9,4 +9,4 @@ Users can calculate the cost of services using the on-site calculator, fill out 
 ## Technologies used
 HTML, CSS, JavaScript, PHP
 ## See the project
-[Service Cost Calculator]([https://mashaborodkina.github.io/Service-Fee-Calculator/])
+([Service Cost Calculator]([https://mashaborodkina.github.io/Service-Fee-Calculator/]))
