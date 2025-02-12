@@ -250,70 +250,86 @@
               </script>
             
               <script>
-                // Загрузка пути к файлу цен из config.json
-                fetch('https://raw.githubusercontent.com/MashaBorodkina/Service-Fee-Calculator/main/data/config.json')
-                    .then(response => response.json())
-                    .then(config => {
-                        const pricesFilePath = config.pricesFilePath;
-            
-                        // Загрузка данных из файла цен
-                        fetch(pricesFilePath)
-                            .then(response => response.json())
-                            .then(prices => {
-                                // Функция для расчёта итоговой суммы
-                                function calculateTotal() {
-                                    let total = 0;
-                                    let hasServices = false; // Флаг для проверки наличия выбранных услуг
-                                
-                                    // Рассчитываем сумму по услугам 1-5
-                                    ['service1', 'service2', 'service3', 'service4', 'service5'].forEach(service => {
-                                        const quantity = parseInt(document.getElementById(service).value) || 0;
-                                        if (quantity > 0) {
-                                            hasServices = true; // Найдена услуга с количеством больше 0
-                                        }
-                                        total += quantity * prices[service];
-                                    });
-                                
-                                    // Добавляем стоимость услуги 6, если галочка стоит
-                                    if (document.getElementById('service6').checked) {
-                                        total += prices['service6'];
-                                        hasServices = true; // Услуга выбрана
-                                    }
-                                
-                                    // Добавляем стоимость услуги 7
-                                    const service7Quantity = parseInt(document.getElementById('service7').value) || 0;
-                                    if (service7Quantity > 0) {
-                                        hasServices = true; // Найдена услуга с количеством больше 0
-                                    }
-                                    total += service7Quantity * prices['service7'];
-                                
-                                    // Добавляем стоимость выезда за город
-                                    const outOfTownQuantity = parseInt(document.getElementById('out_of_town').value) || 0;
-                                    if (outOfTownQuantity > 0) {
-                                        hasServices = true; // Найдена услуга с количеством больше 0
-                                    }
-                                    total += outOfTownQuantity * prices['out_of_town'];
-                                
-                                    // Добавляем стоимость выезда в город, только если выбрана хотя бы одна услуга
-                                    if (hasServices) {
-                                        total += prices['Выезд_город'];
-                                    }
-                                
-                                    // Отображаем итог
-                                    document.getElementById('total').textContent = total;
-                                    // Обновляем скрытое поле с итоговой суммой
-                                    document.getElementById('totalInput').value = total;
-                                }
-            
-                                // Привязываем события после загрузки цен
-                                document.querySelectorAll('#Calc input').forEach(input => {
-                                    input.addEventListener('input', calculateTotal);
-                                    input.addEventListener('change', calculateTotal); // Для чекбоксов
-                                });
-                            })
-                            .catch(error => console.error('Ошибка загрузки цен:', error));
-                    })
-                    .catch(error => console.error('Ошибка загрузки конфигурации:', error));
+const prices={
+    "service1": 600,
+    "service2": 300,
+    "service3": 1200,
+    "service4": 600,
+    "service5": 600,
+    "service6": 600,
+    "service7": 150,
+    "Выезд_город": 385,
+    "out_of_town": 25
+}                
+      // Функция для расчёта итоговой суммы
+    function calculateTotal() {
+        let total = 0;
+        let hasServices = false; // Флаг для проверки наличия выбранных услуг
+
+        // Рассчитываем сумму по услугам 1-5
+        ['service1', 'service2', 'service3', 'service4', 'service5'].forEach(service => {
+            const inputElement = document.getElementById(service);
+            if (inputElement) {
+                const quantity = parseInt(inputElement.value) || 0;
+                if (quantity > 0) {
+                    hasServices = true; // Найдена услуга с количеством больше 0
+                }
+                total += quantity * prices[service];
+            }
+        });
+
+        // Добавляем стоимость услуги 6, если галочка стоит
+        const service6Element = document.getElementById('service6');
+        if (service6Element && service6Element.checked) {
+            total += prices['service6'];
+            hasServices = true; // Услуга выбрана
+        }
+
+        // Добавляем стоимость услуги 7
+        const service7Element = document.getElementById('service7');
+        if (service7Element) {
+            const service7Quantity = parseInt(service7Element.value) || 0;
+            if (service7Quantity > 0) {
+                hasServices = true; // Найдена услуга с количеством больше 0
+            }
+            total += service7Quantity * prices['service7'];
+        }
+
+        // Добавляем стоимость выезда за город
+        const outOfTownElement = document.getElementById('out_of_town');
+        if (outOfTownElement) {
+            const outOfTownQuantity = parseInt(outOfTownElement.value) || 0;
+            if (outOfTownQuantity > 0) {
+                hasServices = true; // Найдена услуга с количеством больше 0
+            }
+            total += outOfTownQuantity * prices['out_of_town'];
+        }
+
+        // Добавляем стоимость выезда в город, только если выбрана хотя бы одна услуга
+        if (hasServices) {
+            total += prices['Выезд_город'];
+        }
+
+        // Отображаем итог
+        const totalElement = document.getElementById('total');
+        if (totalElement) {
+            totalElement.textContent = total;
+        }
+
+        // Обновляем скрытое поле с итоговой суммой
+        const totalInputElement = document.getElementById('totalInput');
+        if (totalInputElement) {
+            totalInputElement.value = total;
+        }
+    }
+
+    // Привязываем события после загрузки страницы
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll('#Calc input').forEach(input => {
+            input.addEventListener('input', calculateTotal);
+            input.addEventListener('change', calculateTotal); // Для чекбоксов
+        });
+    });
             </script>
             <script src="https://code.jquery.com/jquery-3.6.0.min.js" defer></script> <!-- подключение jquery -->
             <script src="ajaxScript.js" defer></script>
