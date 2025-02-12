@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Service Calc</title>
+        <link rel="stylesheet">
+
+        <style>
+        body {
+            background-color: white;
+            font-family: Century Gothic, sans-serif; /* Для улучшения внешнего вида */
+            font-size: calc(10px + 1vw);
+        }
+        
+        .container {
+            display: flex; /* Два блока, калькулятор и форма */
+            gap: 2%; /* Используем % для межблочных отступов */
+            flex-wrap: wrap;
+        }         
+        
+        body, .container {
+            box-sizing: border-box;
+        }
+
+                    
+        .calc-block, .order-block {
+            width: 49%; /* Ширина блоков по 50% от контейнера */
+            border: 1px solid black;
+            box-sizing: border-box;
+            padding: 2vw; /* Паддинг в зависимости от ширины окна */
+            margin-bottom: 5vh; /* Отступ снизу с учетом высоты окна */
+        }
+
+        @media screen and (max-width: 1000px) {
+            .container {
+                width: 100%;
+                flex-direction: column;
+            }
+            div.calc-block, .order-block {
+                width: 100vw;
+            }
+        }
+
+         
+        fieldset {
+            border: none; /* Без границ */
+        }
+        
+        input, textarea {
+            display: block; /* Вертикальное расположение полей */
+            width: 70%; /* Поля на всю ширину родительского блока */
+            padding: 2vh; /* Паддинг относительно высоты экрана */
+            margin-bottom: 2vh; /* Отступ между полями */
+            box-sizing: border-box; /* Учитываем паддинги и бордеры в общей ширине */
+            border-radius: 5px;
+            border: 1px solid black
+        }
+        input[type="file"] {
+            border: none;
+            padding-left: 0;
+        }
+        
+        textarea {
+            height: 20vh; /* Высота для текстового поля (20% от высоты экрана) */
+            resize: vertical; /* Возможность растягивать по вертикали */
+        }
+        
+        label {
+            margin-bottom: 2vh; /* Отступ между текстом и полем */
+            display: block; /* Чтобы текст label был на отдельной строке */
+        }
+        
+        input[type="checkbox"] {
+            width: calc(15px + 1vw); /* Ширина чекбокса — 5% от ширины окна */
+            height: calc(15px + 1vw); /* Высота чекбокса — 5% от высоты окна */
+            margin-right: 0.5vw; /* Отступ справа */
+           
+        }
+        
+        .consent-fild label {
+            display: flex;
+            vertical-align: middle;
+            gap: 0.1vw; /* Отступ между чекбоксом и текстом */
+
+                    
+        }
+                
+        .total-display {
+            margin-top: 2vh;
+            font-size: 2vw; /* Размер шрифта относительно ширины окна */
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            width: 70%;
+        }
+   
+              
+        @media (max-width: 768px) {
+            .calc-block, .order-block {
+                width: 100%; /* На экранах до 768px блоки занимают 100% ширины */
+                padding: 5vw; /* Увеличиваем паддинг на маленьких экранах */
+            }
+        
+            input, textarea {
+                width: 100%; /* Поля на всю ширину экрана */
+                font-size: 4vw; /* Размер шрифта зависит от ширины экрана */
+            }
+        }
+        
+        button {
+            width: auto;  /* Ширина кнопки в процентах от ширины окна */
+            height: auto;  /* Высота кнопки */
+            font-size: calc(10px + 1vw); /* Размер шрифта */
+        }
+        
+        .parent {
+            display: flex;
+            justify-content: center; /* Центрируем по горизонтали */
+            align-items: center;     /* Центрируем по вертикали */
+            height: 15vh;            /* Высота родительского блока — 15% от высоты экрана */
+        }
+    </style>
+        </head>
+        <body>
+          <div class="container"> <!--создание общего контейнера для блоков Калькулятор и Данные-->
+            <div class="calc-block">           
+            <form id="Calc"> 
+                <fieldset>
+                        <label for="service1">Услуга 1</label>
+                        <input type="number" placeholder="Количество" id="service1" name="service1" min="0">
+                        <label for="service2">Услуга 2</label>
+                        <input type="number" placeholder="Количество" id="service2" name="service2" min="0">
+                        <label for="service3">Услуга 3</label>
+                        <input type="number" placeholder="Количество" id="service3" name="service3" min="0">
+                        <label for="service4">Услуга 4</label>
+                        <input type="number" placeholder="Количество" id="service4" name="service4" min="0">
+                        <label for="service5">Услуга 5</label>
+                        <input type="number" placeholder="Количество" id="service5"  name="service5" min="0">
+                        <label for="service6">Услуга 6</label>
+                        <input type="checkbox" placeholder="Количество" id="service6" name="service6">
+                        <label for="service7">Услуга 7</label>
+                        <input type="number" placeholder="Количество" id="service7" name="service7" min="0">
+                        <label for="out_of_town">Выезд за город</label>
+                        <input type="number" placeholder="Километры" id="out_of_town" name="out_of_town" min="0">
+                         
+                        <!-- Итог без поля ввода -->
+                        <div class="total-display">
+                            <span>Итог</span>
+                            <span id="total-container">
+                            <span id="total">0</span> ₽ </span>
+                            </div>
+                            <input type="hidden" id="totalInput" name="total" value="0" />
+                    </fieldset>
+                </form>
+                </div>
+                <div class="order-block">
+                    <form id="Order" action="process.php" method="post" enctype="multipart/form-data">
+                        <fieldset>
+                            <label for="city">Ваш город</label>
+                            <input type="text" placeholder="Укажите город" id="city" name="city" required/>
+                            <label for="name">Ваше имя</label>
+                            <input type="text" placeholder="Укажите имя" id="name" autocomplete="name" name="name" required/>
+                            <label for="phone">Ваш телефон</label>
+                            <input type="text" placeholder="Укажите телефон" id="phone" autocomplete="tel" name="phone" required/>
+                            <label for="message">Ваше сообщение</label>
+                            <textarea type="text" placeholder="Введите сообщение" id="message" name="message"></textarea>
+
+                            <label for="fileUpload"> </label>
+                            <input type="file" id="fileUpload" name="files[]" multiple accept=".pdf, .jpg, .jpeg, .png, .doc, .xls, .xlsx,
+                            .txt, .zip, .rar"/>
+                            <ul id="fileList"></ul>  <!-- Список для отображения загруженных файлов -->
+
+                            <div class="consent-fild">
+                            <label for="consent">
+                            <input type="checkbox" id="consent" name="consent" required/>
+                            Согласие на обработку персональных данных 
+                            </label>
+                            </div>
+                        </fieldset>
+                        
+                <div class="parent">
+                    <button type="button" id="submitBtn">Оформить</button> <!-- Кнопка отправки -->
+                    <p id="statusMessage" style="display: none; color: #ff0000;">Идёт отправка...</p> <!-- Статус во время отправки -->
+                    </div> 
+
+                    </form>
+                </div>
+                
+            </div>
+            <script> /*список для отображения загруженных файлов */
+                const fileInput = document.getElementById('fileUpload');
+                const fileList = document.getElementById('fileList');
+                const fileStatus = document.getElementById('fileStatus');  // Элемент для статуса
+              
+                fileInput.addEventListener('change', function(event) {
+                  let totalSize = 0;
+                  let maxSize = 10 * 1024 * 1024;  // 10 MB
+                  let files = event.target.files;
+              
+                               
+                  // Пройдем по всем выбранным файлам
+                  for (let i = 0; i < files.length; i++) {
+                    totalSize += files[i].size;
+              
+                    // Проверим, не превышает ли общий размер файлов лимит
+                    if (totalSize > maxSize) {
+                      alert('Общий размер файлов превышает 10 MB!');
+                      event.target.value = '';  // Очистим поле, если лимит превышен
+                      fileStatus.textContent = 'Не выбран ни один файл';  // Вернем сообщение, если ошибка
+                      return;
+                    }
+              
+                    // Создаем элемент списка для каждого файла
+                    let li = document.createElement('li');
+                    li.textContent = files[i].name + ' (' + (files[i].size / 1024 / 1024).toFixed(2) + ' MB)';
+              
+                    // Создаем кнопку удаления (крестик)
+                    let deleteBtn = document.createElement('button');
+                    deleteBtn.textContent = '✖';
+                    deleteBtn.style.color = 'red';
+                    deleteBtn.style.marginLeft = '10px';
+                    deleteBtn.style.background = 'none';
+                    deleteBtn.style.border = 'none';
+                    deleteBtn.style.cursor = 'pointer';
+                    
+                    // При нажатии на крестик удаляем файл из списка
+                    deleteBtn.addEventListener('click', function() {
+                      li.remove();  // Удаляем файл из списка
+                      files = [...files].filter((file, index) => index !== Array.from(fileList.children).indexOf(li));  // Убираем файл из массива
+              
+                      // Если файлов больше нет, показываем сообщение
+                      //if (fileList.children.length === 0) {
+                      //  fileStatus.textContent = 'Не выбран ни один файл';  // Отображаем сообщение, если список пуст
+                      //}
+                    });
+              
+                    // Добавляем кнопку удаления к элементу списка
+                    li.appendChild(deleteBtn);
+                    
+                    // Добавляем новый элемент в список
+                    fileList.appendChild(li);
+                  }
+              
+                  //Если после добавления файлов есть хотя бы один, убираем сообщение
+                  //if (fileList.children.length > 0) {
+                    //fileStatus.textContent = '';  // Убираем сообщение о пустом списке
+                  //}
+                });
+              </script>
+            
+              <script>
+                // Загрузка пути к файлу цен из config.json
+                fetch('config.json')
+                    .then(response => response.json())
+                    .then(config => {
+                        const pricesFilePath = config.pricesFilePath;
+            
+                        // Загрузка данных из файла цен
+                        fetch(pricesFilePath)
+                            .then(response => response.json())
+                            .then(prices => {
+                                // Функция для расчёта итоговой суммы
+                                function calculateTotal() {
+                                    let total = 0;
+                                    let hasServices = false; // Флаг для проверки наличия выбранных услуг
+                                
+                                    // Рассчитываем сумму по услугам 1-5
+                                    ['service1', 'service2', 'service3', 'service4', 'service5'].forEach(service => {
+                                        const quantity = parseInt(document.getElementById(service).value) || 0;
+                                        if (quantity > 0) {
+                                            hasServices = true; // Найдена услуга с количеством больше 0
+                                        }
+                                        total += quantity * prices[service];
+                                    });
+                                
+                                    // Добавляем стоимость услуги 6, если галочка стоит
+                                    if (document.getElementById('service6').checked) {
+                                        total += prices['service6'];
+                                        hasServices = true; // Услуга выбрана
+                                    }
+                                
+                                    // Добавляем стоимость услуги 7
+                                    const service7Quantity = parseInt(document.getElementById('service7').value) || 0;
+                                    if (service7Quantity > 0) {
+                                        hasServices = true; // Найдена услуга с количеством больше 0
+                                    }
+                                    total += service7Quantity * prices['service7'];
+                                
+                                    // Добавляем стоимость выезда за город
+                                    const outOfTownQuantity = parseInt(document.getElementById('out_of_town').value) || 0;
+                                    if (outOfTownQuantity > 0) {
+                                        hasServices = true; // Найдена услуга с количеством больше 0
+                                    }
+                                    total += outOfTownQuantity * prices['out_of_town'];
+                                
+                                    // Добавляем стоимость выезда в город, только если выбрана хотя бы одна услуга
+                                    if (hasServices) {
+                                        total += prices['Выезд_город'];
+                                    }
+                                
+                                    // Отображаем итог
+                                    document.getElementById('total').textContent = total;
+                                    // Обновляем скрытое поле с итоговой суммой
+                                    document.getElementById('totalInput').value = total;
+                                }
+            
+                                // Привязываем события после загрузки цен
+                                document.querySelectorAll('#Calc input').forEach(input => {
+                                    input.addEventListener('input', calculateTotal);
+                                    input.addEventListener('change', calculateTotal); // Для чекбоксов
+                                });
+                            })
+                            .catch(error => console.error('Ошибка загрузки цен:', error));
+                    })
+                    .catch(error => console.error('Ошибка загрузки конфигурации:', error));
+            </script>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js" defer></script> <!-- подключение jquery -->
+            <script src="ajaxScript.js" defer></script>
+            
+        </body>
+        
+</html>
+
