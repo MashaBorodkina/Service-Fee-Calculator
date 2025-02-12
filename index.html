@@ -251,7 +251,7 @@
             
               <script>
                 // Загрузка пути к файлу цен из config.json
-                fetch('config.json')
+                fetch('https://raw.githubusercontent.com/MashaBorodkina/Service-Fee-Calculator/main/data/config.json')
                     .then(response => response.json())
                     .then(config => {
                         const pricesFilePath = config.pricesFilePath;
